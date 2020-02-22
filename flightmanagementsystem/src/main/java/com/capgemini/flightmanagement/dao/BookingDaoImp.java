@@ -54,55 +54,45 @@ public class BookingDaoImp implements IBookingDao {
 
 		User u1 = new User("User", 101, "Harshitha", "h590", 264288, "gharshitha76@gmail.com");
 		User u2 = new User("User", 102, "Vani", "v5b6", 284288, "vani123@gmail.com");
+		User u3 = new User("User", 103, "ramya", "rc0", 1234, "ramya1@gmail.com");
 
 		Booking b1 = new Booking(4589, u1, LocalDate.now(), 5000.0, f1, 3);
 		Booking b2 = new Booking(5615, u2, LocalDate.now(), 4000.0, f2, 2);
-		
+
 		bookingList.add(b1);
 		bookingList.add(b2);
 
 	}
 
 	public Booking addBooking(Booking booking) throws BookingException {
-		
-		if(booking!=null) {
-			boolean flag=listOfScheduledFlight.stream().anyMatch(p ->p.getFlight().getFlightNumber() == booking.getFlight().getFlightNumber() && p.getAvailableSeats() >=booking.getNoOfPassengers());
-			if(flag)
-			{
+
+		if (booking != null) {
+			boolean flag = listOfScheduledFlight.stream().anyMatch(p -> p.getFlight().getFlightNumber() == booking.getFlight().getFlightNumber()&& p.getAvailableSeats() >= booking.getNoOfPassengers());
+			if (flag) {
 				bookingList.add(booking);
-				List<ScheduledFlight> a=listOfScheduledFlight.stream().filter(p ->p.getFlight().getFlightNumber() == booking.getFlight().getFlightNumber()?true:false).collect(Collectors.toList());
-			    for(ScheduledFlight l : a)
-			    {
-			    	l.setAvailableSeats(l.getAvailableSeats()-booking.getNoOfPassengers());
-			    }
+				List<ScheduledFlight> a = listOfScheduledFlight.stream().filter(p -> p.getFlight().getFlightNumber() == booking.getFlight().getFlightNumber() ? true : false).collect(Collectors.toList());
+				for (ScheduledFlight l : a) {
+					l.setAvailableSeats(l.getAvailableSeats() - booking.getNoOfPassengers());
+				}
 			}
-		}
-		else
-		{
+		} else {
 			throw new BookingException("Booking details cannot be null");
 		}
 		return booking;
-		
+
 	}
 
 	public Booking modifyBooking(Booking booking) throws BookingException {
-		
-		if(booking!=null) {
-			boolean flag=bookingList.stream().anyMatch(p ->p.getBookingId()==booking.getBookingId());
-			if(flag==true)
-			{
+
+		if (booking != null) {
+			boolean flag = bookingList.stream().anyMatch(p -> p.getBookingId() == booking.getBookingId());
+			if (flag == true) {
 				booking.setNoOfPassengers(booking.getNoOfPassengers());
-			}
-			else
-			{
+			} else {
 				throw new BookingException("BookingId not found");
 			}
 		}
-		
-		
-		
-		
-		
+
 		return booking;
 	}
 
